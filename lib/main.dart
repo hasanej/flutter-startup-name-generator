@@ -42,7 +42,8 @@ class RandomWordsState extends State<RandomWords> {
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
       ),
-      onTap: () {      // Add 9 lines from here...
+      onTap: () {
+        // Add 9 lines from here...
         setState(() {
           if (alreadySaved) {
             _saved.remove(pair);
@@ -69,6 +70,33 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _saved.map(
+            (WordPair pair) {
+              return new ListTile(
+                title: new Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                ),
+              );
+            },
+          );
+          final List<Widget> divided = ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+
+          return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('Favorite'),
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
   }
 }
 
